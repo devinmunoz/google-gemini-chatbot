@@ -1,24 +1,56 @@
-import logo from './logo.svg';
 import './App.css';
-import { run } from './genAi.js';
-import { useEffect, useState } from 'react';
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
+import { useState } from 'react';
+import { getChatResponse } from './genAi.js';
 
 function App() {
-  const[data, setData] = useState([])
-  useEffect(() => {
-    async function fetchData(){
-      const textData = await run()
-      setData(textData)
+  const [messages, setMessages] = useState([
+    {
+      message: "Hello, I'm Gemini! Ask me anything!",
+      sender: "Gemini",
+      sentTime: "just now",
+      direction: "incoming"
     }
-    fetchData()
-  }, [])
+  ]);
+  const [typing, setTyping] = useState(false);
+
+  const handleSend = async (message) => {
+    const newMessage = {
+      message: message,
+      sender: "user",
+      direction: "outgoing"
+    };
+
+    const newMessages = [...messages, newMessage]; // stores the array of all the old messages + newest message and feeds it to Gemini
+    setMessages(newMessages);
+    setTyping(true);
+
+    const response = await getChatResponse(message);
+    setMessages([...newMessages, {
+      message: response,
+      sender: "Gemini",
+      direction: "incoming"
+    }]);
+    setTyping(false);
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <div>{data}</div>;
-      </header>
+      <div style={{ position: "relative", height: "800px", width: "700px" }}>
+        <MainContainer>
+          <ChatContainer>
+            <MessageList
+              typingIndicator={typing ? <TypingIndicator content="Gemini is typing" /> : null}
+            >
+              {messages.map((message, i) => {
+                return <Message key={i} model={message} />
+              })}
+            </MessageList>
+            <MessageInput placeholder="Type message here" onSend={handleSend} attachButton={false} />
+          </ChatContainer>
+        </MainContainer>
+      </div>
     </div>
   );
 }
