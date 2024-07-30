@@ -2,30 +2,32 @@ import './App.css';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import { useState, useEffect } from 'react';
-import { getChatResponse } from './genAi.js';
+import { initializeChat, getChatResponse } from './genAi.js';
 
 function App() {
   const [speech, setSpeech] = useState([{}])
 
   useEffect(() =>{
     fetch("/speech").then(
-      res => res.json()
-    ).then(
         speech => {
           setSpeech(speech)
         }
       )
   }, [])
 
-  const [messages, setMessages] = useState([
-    {
-      message: "Hello, I'm Gemini! Ask me anything!",
-      sender: "Gemini",
-      sentTime: "just now",
-      direction: "incoming"
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [typing, setTyping] = useState(false);
+  useEffect(() => {
+    initializeChat();
+    setMessages([
+      {
+        message: "Hello, I'm Gemini, your AI teacher! Ask me anything you want.",
+        sender: "Gemini",
+        sentTime: "just now",
+        direction: "incoming"
+      }
+    ]);
+  }, []);
 
   const handleSend = async (message) => {
     const newMessage = {
@@ -46,12 +48,12 @@ function App() {
     }]);
     setTyping(false);
     console.log(speech)
-  
   };
+
 
   return (
     <div className="App">
-      <div style={{ position: "relative", height: "800px", width: "700px" }}>
+      <div style={{ position: "relative", height: "800px", width: "400px" }}>
         <MainContainer>
           <ChatContainer>
             <MessageList
