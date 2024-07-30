@@ -1,10 +1,22 @@
 import './App.css';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getChatResponse } from './genAi.js';
 
 function App() {
+  const [speech, setSpeech] = useState([{}])
+
+  useEffect(() =>{
+    fetch("/speech").then(
+      res => res.json()
+    ).then(
+        speech => {
+          setSpeech(speech)
+        }
+      )
+  }, [])
+
   const [messages, setMessages] = useState([
     {
       message: "Hello, I'm Gemini! Ask me anything!",
@@ -33,6 +45,8 @@ function App() {
       direction: "incoming"
     }]);
     setTyping(false);
+    console.log(speech)
+  
   };
 
   return (
