@@ -3,17 +3,15 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import { useState, useEffect } from 'react';
 import { initializeChat, getChatResponse } from './genAi.js';
+//import APIService from '../Components/APIService'
 
 function App() {
-  const [speech, setSpeech] = useState([{}])
-
-  useEffect(() =>{
-    fetch("/speech").then(
-        speech => {
-          setSpeech(speech)
-        }
-      )
-  }, [])
+  // const [speech, setSpeech] = useState('')
+  // const insertText = () =>{
+  //   APIService.InsertArticle({speech})
+  //   .then((response) => props.insertedArticle(response))
+  //   .catch(error => console.log('error',error))
+  // }
 
   const [messages, setMessages] = useState([]);
   const [typing, setTyping] = useState(false);
@@ -47,7 +45,9 @@ function App() {
       direction: "incoming"
     }]);
     setTyping(false);
-    console.log(speech)
+
+    var a = new Audio("http://localhost:5000/speech")
+    a.play()
   };
 
 

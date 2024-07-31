@@ -1,6 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GOOGLE_API_KEY);
-
 let chat;
 
 export async function initializeChat() {
@@ -8,7 +7,7 @@ export async function initializeChat() {
   chat = await model.startChat({
     history: [],
     generationConfig: {
-      maxOutputTokens: 100,
+      maxOutputTokens: 1000,
     },
   });
 }
