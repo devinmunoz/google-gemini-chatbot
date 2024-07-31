@@ -3,16 +3,9 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import { useState, useEffect } from 'react';
 import { initializeChat, getChatResponse } from './genAi.js';
-//import APIService from '../Components/APIService'
+import { synthesizeSpeech } from './speech.js'
 
 function App() {
-  // const [speech, setSpeech] = useState('')
-  // const insertText = () =>{
-  //   APIService.InsertArticle({speech})
-  //   .then((response) => props.insertedArticle(response))
-  //   .catch(error => console.log('error',error))
-  // }
-
   const [messages, setMessages] = useState([]);
   const [typing, setTyping] = useState(false);
   useEffect(() => {
@@ -25,6 +18,7 @@ function App() {
         direction: "incoming"
       }
     ]);
+    synthesizeSpeech("Hello, I'm Gemini, your AI teacher! Ask me anything you want.")
   }, []);
 
   const handleSend = async (message) => {
@@ -39,15 +33,14 @@ function App() {
     setTyping(true);
 
     const response = await getChatResponse(message);
+
     setMessages([...newMessages, {
       message: response,
       sender: "Gemini",
       direction: "incoming"
     }]);
     setTyping(false);
-
-    var a = new Audio("http://localhost:5000/speech")
-    a.play()
+    synthesizeSpeech(response)
   };
 
 
