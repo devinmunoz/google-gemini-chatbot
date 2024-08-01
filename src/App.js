@@ -42,7 +42,7 @@ function App() {
     synthesizeSpeech(response)
   };
 
-
+  
   return (
     <div className="App">
       <div style={{ position: "relative", height: "800px", width: "400px" }}>
@@ -60,6 +60,7 @@ function App() {
         </MainContainer>
       </div>
     </div>
+
   );
 }
 
