@@ -18,7 +18,6 @@ function App() {
         direction: "incoming"
       }
     ]);
-    synthesizeSpeech("Hello, I'm Gemini, your AI teacher! Ask me anything you want.")
   }, []);
 
   const handleSend = async (message) => {

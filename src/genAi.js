@@ -10,6 +10,7 @@ export async function initializeChat() {
       maxOutputTokens: 1000,
     },
   });
+  getChatResponse("You are an elementary school teacher. Answer only in short paragraphs.")
 }
 
 export async function getChatResponse(input) {
