@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // Replace with your API key
-const apiKey = process.env.REACT_APP_SPEECH_API_KEY;
+const apiKey = process.env.REACT_APP_TTS_API_KEY;
 
 // Function to synthesize speech
 export async function synthesizeSpeech(text) {

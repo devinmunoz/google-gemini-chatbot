@@ -36,8 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-/* Hide the paperclip icon */
-.cs-message-input__attachments-button {
-  display: none;
-}
