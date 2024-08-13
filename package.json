@@ -2,6 +2,7 @@
   "name": "google-gemini-app",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
@@ -15,6 +16,7 @@
     "dotenv-webpack": "^8.1.0",
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
+    "path": "^0.12.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-media-recorder": "^1.6.6",
