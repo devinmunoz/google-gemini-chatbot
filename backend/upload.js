@@ -13,7 +13,8 @@ router.use(fileUpload());
 
 router.post('/', async(req, res) => {
     const { image } = req.files;
-    const filePath = path.join(uploadsFolder, "upload.jpg");
+    const uniqueFileName = `upload_${Date.now()}.jpg`; // Generate a unique file name
+    const filePath = path.join(uploadsFolder, uniqueFileName);
 
     // Move the uploaded file to the uploads folder
     image.mv(filePath, async (err) => {
@@ -23,7 +24,7 @@ router.post('/', async(req, res) => {
 
         try {
             // Process the file with Gemini API after it has been successfully moved
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
             const result = await model.generateContent([
                 "What is in this photo?",
                 {inlineData: {data: Buffer.from(fs.readFileSync(filePath)).toString("base64"),
@@ -32,7 +33,11 @@ router.post('/', async(req, res) => {
             console.log(result.response.text());
 
             // Return the URL to access the uploaded image
-            res.status(200).json({ message: 'ok', result: result.response.text()});
+            res.status(200).json({ 
+                message: 'ok', 
+                result: result.response.text(),
+                imageUrl: `/uploads/${uniqueFileName}` // Return the unique image URL
+            });
         } catch (err) {
             res.status(500).json({ message: 'Error processing image with Gemini', error: err });
         }

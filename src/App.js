@@ -1,3 +1,4 @@
+// Import other necessary libraries and components
 import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
@@ -64,33 +65,42 @@ function App() {
   };
 
   const handleFileChange = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.set("image", fileInputRef.current.files[0]);
+      event.preventDefault();
+      const formData = new FormData();
+      formData.set("image", fileInputRef.current.files[0]);
 
-    try {
-      const response = await fetch('/upload', {
-        method: "POST",
-        body: formData
-      });
+      try {
+          const response = await fetch('/upload', {
+              method: "POST",
+              body: formData
+          });
 
-      if (response.ok) {
-        const data = await response.json();
-        const geminiResponse = data.result;
-        console.log(geminiResponse); 
-        setMessages([...messages, {
-           message: geminiResponse,
-           sender: "Gemini",
-           direction: "incoming"
-         }]);
-         synthesizeSpeech(geminiResponse);
-      } else {
-        console.error("Image upload failed.");
+          if (response.ok) {
+              const data = await response.json();
+              const imageUrl = `http://localhost:8000${data.imageUrl}`; // unique image URL
+
+              // uploaded image to the chatbox as a message from the user
+              const imageMessage = {
+                  message: `<img src="${imageUrl}" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;" />`,
+                  sender: "user", 
+                  direction: "outgoing"
+              };
+
+              setMessages([...messages, imageMessage, {
+                  message: data.result,
+                  sender: "Gemini",
+                  direction: "incoming"
+              }]);
+              synthesizeSpeech(data.result);
+          } else {
+              console.error("Image upload failed.");
+          }
+      } catch (error) {
+          console.error(error.message);
       }
-    } catch (error) {
-      console.error(error.message);
-    }
   };
+
+
 
   const handleAttachClick = () => {
     if (fileInputRef.current) {
