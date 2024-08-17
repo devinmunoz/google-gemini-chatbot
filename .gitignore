@@ -12,6 +12,8 @@
 /build
 
 # misc
+/backend/*
+!/backend/dummyfile
 /backend/node_modules
 .env
 .DS_Store
